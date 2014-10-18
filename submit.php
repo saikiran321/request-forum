@@ -17,12 +17,20 @@ To:<input type="date" name="to_date">
 
 include('includes/db.php');
 $from_date=$_POST['from_date'];
-echo $from_date;
-
+$to_date = $_POST['to_date'];
 $reason=$_POST['reason'];
-$other=$_POST['other'];
-$sql="INSERT INTO request (reason,other) VALUES ('$reason','$other')";
-$query=mysql_query($sql);
-echo $query;
 
+$sql="INSERT INTO request (reason,from,to) VALUES (".$reason.",".$from_date.",".$to_date.")";
+
+print_r($sql);
+$query=mysql_query($sql);
+
+if (!$query)
+{
+  echo "Query not successful.";
+}
+else
+{
+  echo "Query successful.";
+}
 ?>
