@@ -29,7 +29,7 @@ $pass = $_POST["pass"];
 
 if (!preg_match('/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}$/', $roll))
 {
-        include('includes/db.php'); 
+        include('includes/db.php');
         $username=$_POST['roll'];
         $sql="SELECT * FROM auth WHERE name='$username'";
         $query=mysql_query($sql);
@@ -38,11 +38,11 @@ if (!preg_match('/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}$/', $roll))
         echo $row['passsword'];
         error_log($row['password']);
         if ($row['password']==$pass)
-        {
-          echo "sucess";
+        {      
         $cookie_name="allow_access";
         $cookie_value=md5(uniqid(rand()));
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+        $_SESSION['name']=$row['name'];
         header('Location:retrive.php');
         }
         else
