@@ -77,8 +77,22 @@ else
         $cookie_name="allow_access";
         $cookie_value=md5(uniqid(rand()));
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-        header('Location:submit.php');
-      }
+        $con=mysqli_connect("saarang.iitm.ac.in","student","13InstiWO","students_1415");
+        if (mysqli_connect_errno()) 
+        {
+          echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        }
+
+        $sql = "SELECT * FROM users WHERE username=".$roll." LIMIT 1";
+        $result = mysqli_query($con, $sql);
+        //Also, check if user is not present in students database...
+        $_SESSION['roll']= $result["username"];
+        $_SESSION['name'] = $result["fullname"];
+        $_SESSION['email'] = $result["email"];
+        $_SESSION['gender'] = $result["gender"];
+        mysqli_close($con);
+        header('Location:submit.php');       
+       }
     }
   }
   ldap_unbind($ldapConn);
@@ -87,22 +101,8 @@ else
   //ldap authentication ends here//
 
   //connect to students database to retrieve user info...
-  $con=mysqli_connect("saarang.iitm.ac.in","student","13InstiWO","students_1415");
-
-  if (mysqli_connect_errno()) 
-  {
-    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  
   }
-
-  $sql = "SELECT * FROM users WHERE username=".$roll." LIMIT 1";
-  $result = mysqli_query($con, $sql);
-  //Also, check if user is not present in students database...
-  $_SESSION['name'] = $result["fullname"];
-  $_SESSION['email'] = $result["email"];
-  $_SESSION['gender'] = $result["gender"];
-  mysqli_close($con);
-
-}
 
 
 ?>
