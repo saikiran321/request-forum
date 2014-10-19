@@ -2,8 +2,8 @@
 
 include "db.php";
 
-#$array = array('dharani.manne@gmail.com','institutewebops@gmail.com', 'me12b040@smail.iitm.ac.in', 'avi.kondeti@gmail.com', 'hvvivek2007@gmail.com');
-$array = array('chiru6753@gmail.com','saikiranp321@gmail.com');
+//$array = array('dharani.manne@gmail.com','institutewebops@gmail.com', 'me12b040@smail.iitm.ac.in', 'avi.kondeti@gmail.com', 'hvvivek2007@gmail.com');
+//$array = array('chiru6753@gmail.com','saikiranp321@gmail.com');
 
 foreach( $array as $to ){
   /*$body = "Hello,<br><br>

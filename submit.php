@@ -1,3 +1,8 @@
+<?php
+if(!isset($_SESSION[])){
+header('/index.php');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,9 +21,10 @@ $password="sai"; // Mysql password
 $connect=mysql_connect($host,$username,$password) or die('can not connect');
 $database=mysql_select_db("request_forum") or die('can not select db');
 
-$from_date=$_POST['from_date'];
-$to_date = $_POST['to_date'];
-$reason=$_POST['reason'];
+$from_date = $_POST['from_date'];
+$to_date   = $_POST['to_date'];
+$reason    = $_POST['reason'];
+$email     = $_POST['email'];
 
 $sql="INSERT INTO request (reason,from,to) VALUES (".$reason.",".$from_date.",".$to_date.")";
 
@@ -32,6 +38,8 @@ if (!$query)
 else
 {
   echo "Query successful.";
+  $array = array($email);
+  include('mail.php');
 }
 }
 else {
