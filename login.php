@@ -8,22 +8,30 @@
  * @copyright (C) 2014 root <root@students>
  * @license MIT
  */
-  
-  if (!isset($_POST["roll"]))
-  {
-    //replace echo with a shared variable for proper styling and use...
-    echo "You haven't entered your roll number. Please do enter it.";
-  }
-  if (!isset($_POST["pass"]))
-  {
-    //replace echo with a shared variable for proper styling and use...
-    echo "You haven't entered your password. Please do enter it.";
-  }
+
+if (!isset($_POST["roll"]))
+{
+  //replace echo with a shared variable for proper styling and use...
+  echo "You haven't entered your roll number. Please do enter it.";
+}
+if (!isset($_POST["pass"]))
+{
+  //replace echo with a shared variable for proper styling and use...
+  echo "You haven't entered your password. Please do enter it.";
+}
 
 
-  $roll = strtoupper($_POST["roll"]);
-  $pass = $_POST["pass"];
-  //ldap auth with given roll and pass...
+$roll = strtoupper($_POST["roll"]);
+$pass = $_POST["pass"];
+//ldap auth with given roll and pass...
+
+if preg_match(/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}/, $roll)
+{
+  //login for admin... 
+	$passwordHash = Password::hash( $pass );
+}
+else
+{
 
   $ldapServer = "ldap.iitm.ac.in";
   $ldapPort = 389;
@@ -34,23 +42,27 @@
   $studentUser = $roll;
   $studentPass = $pass;
 
-  if($ldapConn) {
-	$ldapBind = ldap_bind($ldapConn, $ldapDn, $ldapPass);
-	if($ldapBind){
-			echo "Bound<br>";
-	        	$filter = "(&(objectclass=*)(uid=".$studentUser."))";
-			$ldapDn = "dc=ldap,dc=iitm,dc=ac,dc=in";
-        		$result = ldap_search($ldapConn, $ldapDn, $filter) or die ("Error in search query: ".ldap_error($ldapConn));   
-	     		$entries = ldap_get_entries($ldapConn, $result);
-			foreach($entries as $values => $values1){
-				$logindn = $values1['dn'];
-			}
-			$loginbind = ldap_bind($ldapConn, $logindn, $studentPass);
-			if ($loginbind){
-        			echo "success";}
-			}
-}
-ldap_unbind($ldapConn);
+  if($ldapConn) 
+  {
+    $ldapBind = ldap_bind($ldapConn, $ldapDn, $ldapPass);
+    if($ldapBind)
+    {
+      echo "Bound<br>";
+      $filter = "(&(objectclass=*)(uid=".$studentUser."))";
+      $ldapDn = "dc=ldap,dc=iitm,dc=ac,dc=in";
+      $result = ldap_search($ldapConn, $ldapDn, $filter) or die ("Error in search query: ".ldap_error($ldapConn));   
+      $entries = ldap_get_entries($ldapConn, $result);
+      foreach($entries as $values => $values1)
+      {
+        $logindn = $values1['dn'];
+      }
+      $loginbind = ldap_bind($ldapConn, $logindn, $studentPass);
+      if ($loginbind)
+      {
+        echo "success";}
+    }
+  }
+  ldap_unbind($ldapConn);
 
 
   //ldap authentication ends here//
@@ -58,17 +70,20 @@ ldap_unbind($ldapConn);
   //connect to students database to retrieve user info...
   $con=mysqli_connect("saarang.iitm.ac.in","student","13InstiWO","students_1415");
 
-  if (mysqli_connect_errno()) {
-     echo "Failed to connect to MySQL: " . mysqli_connect_error();
-     }
-  
+  if (mysqli_connect_errno()) 
+  {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
+
   $sql = "SELECT * FROM users WHERE username=".$roll." LIMIT 1";
   $result = mysqli_query($con, $sql);
   //Also, check if user is not present in students database...
-  $name = $result["fullname"];
-  $email = $result["email"];
-  $gender = $result["gender"];
+  $_SESSION['name'] = $result["fullname"];
+  $_SESSION['email'] = $result["email"];
+  $_SESSION['gender'] = $result["gender"];
   mysqli_close($con);
+
+}
 
 ?>
 
