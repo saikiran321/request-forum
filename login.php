@@ -25,9 +25,24 @@ $roll = strtoupper($_POST["roll"]);
 $pass = $_POST["pass"];
 //ldap auth with given roll and pass...
 
-if !preg_match(/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}/, $roll)
+if (!preg_match('/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}$/', $roll))
 {
   //login for admin... 
+        $sql="SELECT FROM auth WHERE name='$roll'";
+        $query=mysql_query($sql);
+        $row=mysql_fetch_assoc($query);
+        if($row['password']==md5('$pass'))
+        {
+        $cookie_name="allow_access";
+        $cookie_value=md5(uniqid(rand()));
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+        header('Location:retrive.php');
+        }
+        else
+        {
+
+          echo "please enter correct password";
+        }
 }
 else
 {
@@ -46,7 +61,7 @@ else
     $ldapBind = ldap_bind($ldapConn, $ldapDn, $ldapPass);
     if($ldapBind)
     {
-      echo "Bound<br>";
+      //echo "Bound<br>";
       $filter = "(&(objectclass=*)(uid=".$studentUser."))";
       $ldapDn = "dc=ldap,dc=iitm,dc=ac,dc=in";
       $result = ldap_search($ldapConn, $ldapDn, $filter) or die ("Error in search query: ".ldap_error($ldapConn));   
@@ -58,7 +73,12 @@ else
       $loginbind = ldap_bind($ldapConn, $logindn, $studentPass);
       if ($loginbind)
       {
-        echo "success";}
+         //echo "success";
+        $cookie_name="allow_access";
+        $cookie_value=md5(uniqid(rand()));
+        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+        header('Location:submit.php');
+      }
     }
   }
   ldap_unbind($ldapConn);
@@ -83,6 +103,7 @@ else
   mysqli_close($con);
 
 }
+
 
 ?>
 
