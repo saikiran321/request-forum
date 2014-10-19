@@ -1,21 +1,21 @@
-<?php  
-	session_start();
-?>
+<!DOCTYPE html>
 <html>
-<form action="" method="post">
-<br>
-Reason:<input type="text" name="reason">
-<br>
-From:<input type="date" name="from_date">
-<br>
-To:<input type="date" name="to_date">
-<input type="submit">
-</form>
-</html>
-
+<head>
+<title>Request Forum</title>
+</head>
+<body>
 <?php
+//session starts here
+session_start();
+
+//if form is not submitted run this
 if(isset($_POST['submit'])){
-include('includes/db.php');
+$host="localhost"; // Host name 
+$username="root"; // Mysql username 
+$password="sai"; // Mysql password 
+$connect=mysql_connect($host,$username,$password) or die('can not connect');
+$database=mysql_select_db("request_forum") or die('can not select db');
+
 $from_date=$_POST['from_date'];
 $to_date = $_POST['to_date'];
 $reason=$_POST['reason'];
@@ -34,4 +34,20 @@ else
   echo "Query successful.";
 }
 }
+else {
 ?>
+<form action="" method="post">
+<br>
+Reason:<input type="text" name="reason">
+<br>
+From:<input type="date" name="from_date">
+<br>
+To:<input type="date" name="to_date"><br>
+Email:<input type="email" name="email" required><br>
+<input type="submit">
+</form>
+<?php
+}
+?>
+</body>
+</html>
