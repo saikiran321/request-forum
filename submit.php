@@ -3,37 +3,34 @@
 ?>
 <html>
 <form action="submit.php" method="post">
-Hostel
-<select name="hostel">
-		<option value="naramda">Narmada</option>
-		<option value="ganga">Ganga</option>
-		<option value="godavari">Godavari</option>
-		<option value="tapti">Tapti</option>
-</select>
 <br>
 Reason:<input type="text" name="reason">
 <br>
-Other:<input type="text" name="other">
+From:<input type="date" name="from_date">
 <br>
+To:<input type="date" name="to_date">
 <input type="submit">
 </form>
-
 </html>
 
 <?php
+
 include('includes/db.php');
-$hostel=$_POST['hostel'];
+$from_date=$_POST['from_date'];
+$to_date = $_POST['to_date'];
 $reason=$_POST['reason'];
-$other=$_POST['other'];
 
-//echo $hostel;
-//echo $reason;
-//echo $other;
+$sql="INSERT INTO request (reason,from,to) VALUES (".$reason.",".$from_date.",".$to_date.")";
 
-$sql="INSERT INTO request (hostel,reason,other) VALUES ('$hostel','$reason','$other')";
+print_r($sql);
 $query=mysql_query($sql);
-echo $query;
 
-
+if (!$query)
+{
+  echo "Query not successful.";
+}
+else
+{
+  echo "Query successful.";
+}
 ?>
-
