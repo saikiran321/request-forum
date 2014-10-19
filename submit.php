@@ -1,5 +1,7 @@
 <?php
-if(!isset($_SESSION[])){
+//session starts here
+session_start();
+if(!isset($_SESSION['id'])){
 header('/index.php');
 }
 ?>
@@ -10,8 +12,6 @@ header('/index.php');
 </head>
 <body>
 <?php
-//session starts here
-session_start();
 
 //if form is not submitted run this
 if(isset($_POST['submit'])){
