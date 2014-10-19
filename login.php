@@ -25,24 +25,29 @@ $roll = strtoupper($_POST["roll"]);
 $pass = $_POST["pass"];
 //ldap auth with given roll and pass...
 //Create a password hash
-$passwordhash = password_hash($pass);
+//$passwordhash = password_hash($pass);
 
 if (!preg_match('/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}$/', $roll))
 {
-  //login for admin... 
-        $sql="SELECT FROM auth WHERE name='$roll'";
+        include('includes/db.php');
+        $username=$_POST['roll'];
+        $sql="SELECT * FROM auth WHERE name='$username'";
         $query=mysql_query($sql);
-        $row=mysql_fetch_assoc($query);
-        if($row['password']==md5('$pass'))
-        {
+        echo $query;
+        $row=mysql_fetch_array($query);
+        echo $row['passsword'];
+        error_log($row['password']);
+        if ($row['password']==$pass)
+        {      
         $cookie_name="allow_access";
         $cookie_value=md5(uniqid(rand()));
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+        $_SESSION['name']=$row['name'];
+        $_SESSION['auth_level']=$row['auth_level'];
         header('Location:retrive.php');
         }
         else
         {
-
           echo "please enter correct password";
         }
 }
@@ -93,6 +98,7 @@ else
         $_SESSION['name'] = $result["fullname"];
         $_SESSION['email'] = $result["email"];
         $_SESSION['gender'] = $result["gender"];
+        $_SESSION['user_id']=$result['id'];
         mysqli_close($con);
         header('Location:submit.php');       
        }
