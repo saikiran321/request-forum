@@ -28,6 +28,7 @@ $pass = $_POST["pass"];
 if !preg_match(/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}/, $roll)
 {
   //login for admin... 
+	$passwordHash = Password::hash( $pass );
 }
 else
 {
