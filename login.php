@@ -77,6 +77,7 @@ else
         $cookie_name="allow_access";
         $cookie_value=md5(uniqid(rand()));
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
+        //database connetion established
         $con=mysqli_connect("saarang.iitm.ac.in","student","13InstiWO","students_1415");
         if (mysqli_connect_errno()) 
         {
