@@ -43,6 +43,7 @@ if (!preg_match('/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}$/', $roll))
         $cookie_value=md5(uniqid(rand()));
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
         $_SESSION['name']=$row['name'];
+        $_SESSION['auth_level']=$row['auth_level'];
         header('Location:retrive.php');
         }
         else
