@@ -24,6 +24,8 @@ if (!isset($_POST["pass"]))
 $roll = strtoupper($_POST["roll"]);
 $pass = $_POST["pass"];
 //ldap auth with given roll and pass...
+//Create a password hash
+$passwordhash = password_hash($pass);
 
 if (!preg_match('/[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{1}[0-9]{3}$/', $roll))
 {
