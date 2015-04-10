@@ -3,7 +3,7 @@
 
 	$host = "localhost";
 	$username = "students";
-	$password = "13InstiWO";
+	$password = "";
 	$db_name = "students";
 	$tbl_name = "users";
 
